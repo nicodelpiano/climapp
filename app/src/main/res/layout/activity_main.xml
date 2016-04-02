@@ -8,7 +8,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.example.android.climapp.MainActivity">
+    tools:context="com.example.android.climapp.MainActivity"
+    android:id="@+id/activity_main">
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,6 +21,8 @@
     <EditText
         android:hint="Ingrese el nombre de la ciudad"
         android:id="@+id/city_name"
+        android:inputType="text"
+        android:maxLength="100"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -28,4 +31,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/button_ask"
         android:text="Consultar"/>
+
+
 </LinearLayout>
