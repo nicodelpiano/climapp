@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,8 +24,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +36,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String APP_ID = "62f72d3dcebf98e042b9fe65b733cac7";
-    private static final String URL_ASK = "http://api.openweathermap.org/data/2.5/weather?q=";
+    //private static final String URL_ASK = "http://api.openweathermap.org/data/2.5/weather?q=";
+    private static final String URL_ASK = "http://api.openweathermap.org/data/2.5/forecast/daily?cnt=3&q=";
+    //http://api.openweathermap.org/data/2.5/forecast/daily?q=Rosario&units=metric&cnt=3&appid=62f72d3dcebf98e042b9fe65b733cac7
 
     private String makeUrl (String city) {
         return URL_ASK + city + "&appid=" + APP_ID;
@@ -42,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private Button cityButton;
     private EditText cityEditText;
     private JSONObject weatherInfo;
+    private WeatherData weatherData;
+    private ListView weatherListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         // Result handling
                         Log.v("Results", response);
 
@@ -108,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     public JsonObjectRequest makeJSONRequest (String cityNameArg) {
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest(
@@ -115,7 +123,18 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
                         weatherInfo = response;
+                        weatherData = new Gson().fromJson(weatherInfo.toString(), WeatherData.class);
+                        weatherListView = (ListView) findViewById(R.id.weather_three_fragment_list);
+
+                        // get data from the table by the ListAdapter
+                        ForecastInfoAdapter forecastInfoAdapter = new ForecastInfoAdapter(
+                                getApplicationContext(),
+                                R.layout.list_item_days, weatherData.list);
+
+                        weatherListView.setAdapter(forecastInfoAdapter);
+
                         // Result handling
                         Log.v("Results", response.toString());
 
