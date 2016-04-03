@@ -19,8 +19,11 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,13 +31,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String appid = "62f72d3dcebf98e042b9fe65b733cac7";
-    private static final String urlAsk = "http://api.openweathermap.org/data/2.5/weather?q=";
-    private static final String addAppId = "&appid=";
+    private static final String APP_ID = "62f72d3dcebf98e042b9fe65b733cac7";
+    private static final String URL_ASK = "http://api.openweathermap.org/data/2.5/weather?q=";
+
+    private String makeUrl (String city) {
+        return URL_ASK + city + "&appid=" + APP_ID;
+    }
 
     private String cityName;
     private Button cityButton;
     private EditText cityEditText;
+    private JSONObject weatherInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
                 cityName = cityEditText.getText().toString();
 
-                Volley.newRequestQueue(getApplicationContext()).add(makeRequest(cityName));
+                Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
 
                 /*Toast toast = Toast.makeText(getApplicationContext(), cityName, Toast.LENGTH_SHORT);
                 toast.show();*/
@@ -75,9 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public StringRequest makeRequest (String cityNameArg) {
+    public StringRequest makeStringRequest (String cityNameArg) {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, urlAsk + cityNameArg + addAppId + appid,
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET, makeUrl(cityNameArg),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -97,6 +105,32 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return stringRequest;
+    }
+
+
+    public JsonObjectRequest makeJSONRequest (String cityNameArg) {
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(
+                Request.Method.GET, makeUrl(cityNameArg), null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        weatherInfo = response;
+                        // Result handling
+                        Log.v("Results", response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                // Error handling
+                Log.v("Error", error.toString());
+
+            }
+        });
+
+        return jsonRequest;
     }
 
 }
