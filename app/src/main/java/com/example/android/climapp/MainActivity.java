@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         // This begins the fragment transaction that let us play with the fragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        // This allows us to use the resources of the activity
+        // This allows us to obtain the resources of the activity
         Configuration configInfo = getResources().getConfiguration();
 
         // wtf stands for weather three fragment :P
@@ -89,32 +89,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
     }
-
-    public StringRequest makeStringRequest (String cityNameArg) {
-
-        StringRequest stringRequest = new StringRequest(
-                Request.Method.GET, makeUrl(cityNameArg),
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Result handling
-                        Log.v("Results", response);
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                // Error handling
-                Log.v("Error", error.toString());
-
-            }
-        });
-
-        return stringRequest;
-    }
-
-
 
     public JsonObjectRequest makeJSONRequest (String cityNameArg) {
 
