@@ -1,43 +1,37 @@
 package com.example.android.climapp;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int DAYS = 4;
     private static final String APP_ID = "62f72d3dcebf98e042b9fe65b733cac7";
     //private static final String URL_ASK = "http://api.openweathermap.org/data/2.5/weather?q=";
-    private static final String URL_ASK = "http://api.openweathermap.org/data/2.5/forecast/daily?cnt=3&q=";
+    private static final String URL_ASK = "http://api.openweathermap.org/data/2.5/forecast/daily?cnt="
+            + DAYS + "&q=";
     //http://api.openweathermap.org/data/2.5/forecast/daily?q=Rosario&units=metric&cnt=3&appid=62f72d3dcebf98e042b9fe65b733cac7
 
     private String makeUrl (String city) {
@@ -63,11 +57,8 @@ public class MainActivity extends AppCompatActivity {
         cityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 cityName = cityEditText.getText().toString();
-
                 Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
-
                 /*Toast toast = Toast.makeText(getApplicationContext(), cityName, Toast.LENGTH_SHORT);
                 toast.show();*/
             }
@@ -82,11 +73,23 @@ public class MainActivity extends AppCompatActivity {
         Configuration configInfo = getResources().getConfiguration();
 
         // wtf stands for weather three fragment :P
-        WeatherThreeFragment wtf = new WeatherThreeFragment();
+        WeatherFragment wtf = new WeatherFragment();
 
         fragmentTransaction.add(R.id.activity_main, wtf);
-
         fragmentTransaction.commit();
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ListView list = savedInstanceState.getParcelable("list");
 
     }
 
@@ -109,6 +112,13 @@ public class MainActivity extends AppCompatActivity {
 
                         weatherListView.setAdapter(forecastInfoAdapter);
 
+                        weatherListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Toast.makeText(MainActivity.this, weatherData.list.get(position).getTemperatureInCelsius(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                         // Result handling
                         Log.v("Results", response.toString());
 
@@ -125,5 +135,4 @@ public class MainActivity extends AppCompatActivity {
 
         return jsonRequest;
     }
-
 }

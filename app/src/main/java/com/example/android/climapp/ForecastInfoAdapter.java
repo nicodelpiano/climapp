@@ -32,6 +32,16 @@ public class ForecastInfoAdapter extends ArrayAdapter<WeatherData.ForecastInfo> 
         super(context, resource, objects);
     }
 
+    /*
+        addOneDay:
+        this function simply adds one day to the calendar
+        and returns the format provided by dateFormat
+     */
+    public String addOneDay(Calendar calendar, DateFormat dateFormat) {
+        calendar.add(Calendar.DATE, 1);
+        return dateFormat.format(calendar.getTime());
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -52,25 +62,19 @@ public class ForecastInfoAdapter extends ArrayAdapter<WeatherData.ForecastInfo> 
             TextView tt2 = (TextView) v.findViewById(R.id.list_item_info);
             TextView tt3 = (TextView) v.findViewById(R.id.list_item_temperature);
 
-            // Obtaining the current date
-            String tomorrow;
-            String pastTomorrow;
-
             DateFormat dateFormat = new SimpleDateFormat("dd-MMM");
 
             Calendar calendar = Calendar.getInstance();
-            Date today = calendar.getTime();
-            calendar.add(Calendar.DATE, 1);
-            tomorrow = dateFormat.format(calendar.getTime());
-            calendar.add(Calendar.DATE, 1);
-            pastTomorrow = dateFormat.format(calendar.getTime());
+            String dia3 = addOneDay(calendar, dateFormat);
+            String dia4 = addOneDay(calendar, dateFormat);
 
             // Harcoding the name of the days according to the position
             // (ask benja and mariano if this is OK)
             switch (position) {
                 case 0 : tt0.setText("Hoy"); break;
-                case 1 : tt0.setText(tomorrow); break;
-                case 2 : tt0.setText(pastTomorrow); break;
+                case 1 : tt0.setText("Mañana"); break;
+                case 2 : tt0.setText(dia3); break;
+                case 3 : tt0.setText(dia4); break;
             }
 
             Picasso.with(getContext()).load(forecastInfo.getIconAddress()).into(tt1);
