@@ -140,7 +140,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void showDetails(View view) {
         Intent intent = new Intent(this, ShowDetailsActivity.class);
+        //intent.putParcelableArrayListExtra("weatherData", weatherData.list);
         intent.putExtra("weatherData", weatherData);
+        /* Bundle bundle = new Bundle();
+        bundle.putParcelable("weatherDataBundle", weatherData);
+        intent.putExtra("bundleObject", bundle); */
         startActivity(intent);
     }
 }
