@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.v4.os.ParcelableCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -216,7 +217,7 @@ public class WeatherData implements Parcelable {
 
         // insert the key value pairs to the bundle
         bundle.putString("cityName", this.getName());
-//        bundle.putParcelableArrayList("forecastList", this.list);
+        bundle.putParcelable("forecastList", this.list.get(0));
 
         // write the key value pairs to the parcel
         dest.writeBundle(bundle);
@@ -230,7 +231,8 @@ public class WeatherData implements Parcelable {
             Bundle bundle = source.readBundle();
         //    ArrayList<ForecastInfo> forecastList = source.readArrayList(ForecastInfo.class.getClassLoader());
             // instantiate the weather using values from the bundle
-            return new WeatherData(bundle.getString("cityName"));
+            return new WeatherData(bundle.getString("cityName"),
+                    (ForecastInfo) bundle.getParcelable("forecastList"));
         }
 
         @Override
@@ -240,10 +242,12 @@ public class WeatherData implements Parcelable {
 
     };
 
-    private WeatherData (String name) {
+    private WeatherData (String name, ForecastInfo flist) {
         City cityNew = new City();
         cityNew.name = name;
         city = cityNew;
+        list = new ArrayList();
+        list.add(flist);
     }
 
 }
