@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final int DAYS = 4;
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                         weatherListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(MainActivity.this, weatherData.list.get(position).getTemperatureInCelsius(), Toast.LENGTH_SHORT).show();
+                                showDetails(view);
                             }
                         });
 
@@ -134,5 +136,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return jsonRequest;
+    }
+
+    public void showDetails(View view) {
+        Intent intent = new Intent(this, ShowDetailsActivity.class);
+        intent.putExtra("weatherData", weatherData);
+        startActivity(intent);
     }
 }

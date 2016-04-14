@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Climapp</string>
+    <string name="title_activity_show_details">ShowDetailsActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
