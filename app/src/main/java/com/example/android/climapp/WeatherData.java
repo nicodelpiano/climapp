@@ -16,8 +16,42 @@ public class WeatherData implements Parcelable {
 
     private final static String ICON_ADDR = "http://openweathermap.org/img/w/";
 
-    static class City {
+    static class City implements Parcelable {
         String name;
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            Bundle bundle = new Bundle();
+            bundle.putString("cityName", name);
+            dest.writeBundle(bundle);
+        }
+
+        public static final Parcelable.Creator<City> CREATOR = new Creator<City>() {
+
+            @Override
+            public City createFromParcel(Parcel source) {
+                // read the bundle containing key value pairs from the parcel
+                Bundle bundle = source.readBundle();
+
+                // instantiate the forecast info using values from the bundle
+                return new City(bundle.getString("cityName"));
+            }
+
+            @Override
+            public City[] newArray(int size) {
+                return new City[size];
+            }
+
+        };
+
+        private City (String cityName) {
+            name = cityName;
+        }
     }
 
     static class Weather implements Parcelable {
@@ -243,8 +277,7 @@ public class WeatherData implements Parcelable {
     };
 
     private WeatherData (String name, ForecastInfo flist) {
-        City cityNew = new City();
-        cityNew.name = name;
+        City cityNew = new City(name);
         city = cityNew;
         list = new ArrayList();
         list.add(flist);

@@ -82,19 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        ListView list = savedInstanceState.getParcelable("list");
-
-    }
-
     public JsonObjectRequest makeJSONRequest (String cityNameArg) {
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest(
