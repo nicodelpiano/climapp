@@ -54,31 +54,35 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        cityButton = (Button) findViewById(R.id.button_ask);
-        cityEditText = (EditText) findViewById(R.id.city_name);
+        // Esto no es null cuando estamos en una pantalla grande, como una tablet
+        if(findViewById(R.id.bigscreen_layout) != null) {
 
-        cityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cityName = cityEditText.getText().toString();
-                Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
-            }
-        });
+        } else {
+            cityButton = (Button) findViewById(R.id.button_ask);
+            cityEditText = (EditText) findViewById(R.id.city_name);
 
-        FragmentManager fragmentManager = getFragmentManager();
+            cityButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cityName = cityEditText.getText().toString();
+                    Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
+                }
+            });
 
-        // This begins the fragment transaction that let us play with the fragment
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentManager fragmentManager = getFragmentManager();
 
-        // This allows us to obtain the resources of the activity
-        Configuration configInfo = getResources().getConfiguration();
+            // This begins the fragment transaction that let us play with the fragment
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        // wtf stands for weather fragment
-        WeatherFragment wf = new WeatherFragment();
+            // This allows us to obtain the resources of the activity
+            Configuration configInfo = getResources().getConfiguration();
 
-        fragmentTransaction.add(R.id.activity_main, wf);
-        fragmentTransaction.commit();
+            // wtf stands for weather fragment
+            WeatherFragment wf = new WeatherFragment();
 
+            fragmentTransaction.add(R.id.activity_main, wf);
+            fragmentTransaction.commit();
+        }
     }
 
     public JsonObjectRequest makeJSONRequest (String cityNameArg) {
