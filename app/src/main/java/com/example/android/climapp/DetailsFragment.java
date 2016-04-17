@@ -38,6 +38,11 @@ public class DetailsFragment extends Fragment {
         dayPos = intent.getIntExtra("day", 0);
         weatherData = intent.getParcelableExtra("wData");
 
+        if (weatherData == null) {
+            weatherData = getArguments().getParcelable("wData");
+            dayPos = getArguments().getInt("day");
+        }
+
         temperature = (TextView) rootView.findViewById(R.id.details_temperature);
         day = (TextView) rootView.findViewById(R.id.details_day);
         info = (TextView) rootView.findViewById(R.id.details_info);

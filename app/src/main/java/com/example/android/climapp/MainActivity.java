@@ -54,35 +54,28 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        // Esto no es null cuando estamos en una pantalla grande, como una tablet
-        if(findViewById(R.id.bigscreen_layout) != null) {
+        cityButton = (Button) findViewById(R.id.button_ask);
+        cityEditText = (EditText) findViewById(R.id.city_name);
 
-        } else {
-            cityButton = (Button) findViewById(R.id.button_ask);
-            cityEditText = (EditText) findViewById(R.id.city_name);
+        cityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cityName = cityEditText.getText().toString();
+                Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
+            }
+        });
 
-            cityButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cityName = cityEditText.getText().toString();
-                    Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
-                }
-            });
+        FragmentManager fragmentManager = getFragmentManager();
 
-            FragmentManager fragmentManager = getFragmentManager();
+        // This begins the fragment transaction that let us play with the fragment
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            // This begins the fragment transaction that let us play with the fragment
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        // wf stands for weather fragment
+        WeatherFragment wf = new WeatherFragment();
 
-            // This allows us to obtain the resources of the activity
-            Configuration configInfo = getResources().getConfiguration();
+        fragmentTransaction.add(R.id.activity_main, wf);
+        fragmentTransaction.commit();
 
-            // wtf stands for weather fragment
-            WeatherFragment wf = new WeatherFragment();
-
-            fragmentTransaction.add(R.id.activity_main, wf);
-            fragmentTransaction.commit();
-        }
     }
 
     public JsonObjectRequest makeJSONRequest (String cityNameArg) {
@@ -129,9 +122,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showDetails(View view, int position) {
-        Intent intent = new Intent(this, ShowDetailsActivity.class);
-        intent.putExtra("wData", weatherData);
-        intent.putExtra("day", position);
-        startActivity(intent);
+
+        // Esto no es null cuando estamos en una pantalla grande, como una tablet
+        if(findViewById(R.id.bigscreen_layout) != null) {
+            DetailsFragment df = new DetailsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("wData", weatherData);
+            bundle.putInt("day", position);
+            df.setArguments(bundle);
+            getFragmentManager().beginTransaction().add(R.id.activity_main, df).commit();
+        } else {
+            Intent intent = new Intent(this, ShowDetailsActivity.class);
+            intent.putExtra("wData", weatherData);
+            intent.putExtra("day", position);
+
+            startActivity(intent);
+        }
     }
 }
