@@ -19,11 +19,8 @@ public class ShowDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_details);
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("bundleObject");
-        intent.setExtrasClassLoader(WeatherData.class.getClassLoader());
-        bundle.setClassLoader(WeatherData.class.getClassLoader());
-        WeatherData weatherData = (WeatherData) bundle.getParcelable("weatherData");
-        System.out.println(weatherData.city.name);
+        WeatherData weather = (WeatherData) intent.getParcelableExtra("wdata");
+        System.out.println(weather.list);
 
     }
 

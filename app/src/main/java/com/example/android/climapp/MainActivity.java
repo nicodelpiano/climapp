@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -127,11 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showDetails(View view) {
         Intent intent = new Intent(this, ShowDetailsActivity.class);
-        //intent.putParcelableArrayListExtra("weatherData", weatherData.list);
-//        intent.putExtra("weatherData", weatherData);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("weatherDataBundle", weatherData);
-        intent.putExtra("bundleObject", bundle);
+        intent.putExtra("wdata", weatherData);
         startActivity(intent);
     }
 }
