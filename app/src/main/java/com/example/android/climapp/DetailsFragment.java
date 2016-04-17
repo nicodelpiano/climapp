@@ -50,8 +50,8 @@ public class DetailsFragment extends Fragment {
         day.setText(ForecastInfoAdapter.getDay(dayPos));
         info.setText(weatherData.getDescription(dayPos));
         cityName.setText(weatherData.getName());
-        pressure.setText(Float.toString(weatherData.getPressure(dayPos)));
-        humidity.setText(Float.toString(weatherData.getHumidity(dayPos)));
+        pressure.setText(pressure.getText() + Float.toString(weatherData.getPressure(dayPos)));
+        humidity.setText(humidity.getText() + Float.toString(weatherData.getHumidity(dayPos)));
         Picasso.with(getActivity().getApplicationContext()).load(weatherData.getIconAddress(dayPos)).into(image);
 
         return rootView;

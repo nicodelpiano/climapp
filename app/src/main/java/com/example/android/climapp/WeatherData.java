@@ -184,6 +184,8 @@ public class WeatherData implements Parcelable {
             Bundle bundle = new Bundle();
 
             bundle.putParcelable("temp", this.temp);
+            bundle.putFloat("pressure", this.pressure);
+            bundle.putFloat("humidity", this.humidity);
             bundle.putParcelableArrayList("weatherList", this.weather);
 
             dest.writeBundle(bundle);
@@ -202,6 +204,7 @@ public class WeatherData implements Parcelable {
                 // instantiate the forecast info using values from the bundle
                 //return new ForecastInfo(new Temp(1.0f, 1.0f, 1.0f), new ArrayList<Weather>());
                 return new ForecastInfo((Temp) bundle.get("temp"),
+                        (float) bundle.get("humidity"), (float) bundle.get("pressure"),
                         (ArrayList<Weather>) bundle.get("weatherList"));
             }
 
@@ -212,8 +215,10 @@ public class WeatherData implements Parcelable {
 
         };
 
-        private ForecastInfo (Temp t, ArrayList<Weather> weatherList) {
+        private ForecastInfo (Temp t, float h, float p, ArrayList<Weather> weatherList) {
             this.temp = t;
+            this.humidity = h;
+            this.pressure = p;
             this.weather = weatherList;
         };
     }
