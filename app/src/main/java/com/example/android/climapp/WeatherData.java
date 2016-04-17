@@ -92,7 +92,7 @@ public class WeatherData implements Parcelable {
 
         };
 
-        public Weather (String des, String ico) {
+        private Weather (String des, String ico) {
             icon = ico;
             description = des;
         }
@@ -139,7 +139,7 @@ public class WeatherData implements Parcelable {
 
         };
 
-        public Temp (float tDay, float tMin, float tMax) {
+        private Temp (float tDay, float tMin, float tMax) {
             day = tDay;
             min = tMin;
             max = tMax;
@@ -147,8 +147,8 @@ public class WeatherData implements Parcelable {
     }
 
     static class ForecastInfo implements Parcelable {
-        //float humidity;
-        //float pressure;
+        float humidity;
+        float pressure;
         Temp temp;
         ArrayList<Weather> weather;
         //float speed;
@@ -160,6 +160,9 @@ public class WeatherData implements Parcelable {
             float t = temp.day - 273.15f;
             return String.format("%.0f" + (char) 0x00B0, t);
         };
+
+        public float getHumidity() { return humidity; }
+        public float getPressure() { return pressure; }
 
         public String getIconAddress() {
             return ICON_ADDR + weather.get(0).icon + ".png";
@@ -209,7 +212,7 @@ public class WeatherData implements Parcelable {
 
         };
 
-        public ForecastInfo (Temp t, ArrayList<Weather> weatherList) {
+        private ForecastInfo (Temp t, ArrayList<Weather> weatherList) {
             this.temp = t;
             this.weather = weatherList;
         };
@@ -245,6 +248,14 @@ public class WeatherData implements Parcelable {
         return list.get(day).getDescription();
     }
 
+    public float getPressure(int day) {
+        return list.get(day).getPressure();
+    }
+
+    public float getHumidity(int day) {
+        return list.get(day).getHumidity();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -270,8 +281,10 @@ public class WeatherData implements Parcelable {
             // read the bundle containing key value pairs from the parcel
             Bundle bundle = source.readBundle();
             bundle.setClassLoader(ForecastInfo.class.getClassLoader());
+
+            ArrayList<ForecastInfo> forecastInfos = bundle.getParcelableArrayList("forecastList");
             return new WeatherData(bundle.getString("cityName"),
-                    new ArrayList<ForecastInfo>());
+                    forecastInfos);
 
         }
 
@@ -285,15 +298,7 @@ public class WeatherData implements Parcelable {
     private WeatherData (String name, ArrayList<ForecastInfo> forecastInfos) {
         City cityNew = new City(name);
         city = cityNew;
-        forecastInfos.add(new ForecastInfo(
-                new Temp(1.0f, 1.0f, 1.0f),
-                new ArrayList<Weather>()));
         list = forecastInfos;
-    }
-
-    private WeatherData (String name) {
-        City cityNew = new City(name);
-        city = cityNew;
     }
 
 }

@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 cityName = cityEditText.getText().toString();
                 Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
-                /*Toast toast = Toast.makeText(getApplicationContext(), cityName, Toast.LENGTH_SHORT);
-                toast.show();*/
             }
         });
 
@@ -75,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
         // This allows us to obtain the resources of the activity
         Configuration configInfo = getResources().getConfiguration();
 
-        // wtf stands for weather three fragment :P
-        WeatherFragment wtf = new WeatherFragment();
+        // wtf stands for weather fragment
+        WeatherFragment wf = new WeatherFragment();
 
-        fragmentTransaction.add(R.id.activity_main, wtf);
+        fragmentTransaction.add(R.id.activity_main, wf);
         fragmentTransaction.commit();
 
     }
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         weatherListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                showDetails(view);
+                                showDetails(view, position);
                             }
                         });
 
@@ -126,9 +124,10 @@ public class MainActivity extends AppCompatActivity {
         return jsonRequest;
     }
 
-    public void showDetails(View view) {
+    public void showDetails(View view, int position) {
         Intent intent = new Intent(this, ShowDetailsActivity.class);
-        intent.putExtra("wdata", weatherData);
+        intent.putExtra("wData", weatherData);
+        intent.putExtra("day", position);
         startActivity(intent);
     }
 }

@@ -37,9 +37,30 @@ public class ForecastInfoAdapter extends ArrayAdapter<WeatherData.ForecastInfo> 
         this function simply adds one day to the calendar
         and returns the format provided by dateFormat
      */
-    public String addOneDay(Calendar calendar, DateFormat dateFormat) {
+    static public String addOneDay(Calendar calendar, DateFormat dateFormat) {
         calendar.add(Calendar.DATE, 1);
         return dateFormat.format(calendar.getTime());
+    }
+
+    static public String getDay(int position) {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MMM");
+        String day = "";
+
+        Calendar calendar = Calendar.getInstance();
+        String dia3 = addOneDay(calendar, dateFormat);
+        String dia4 = addOneDay(calendar, dateFormat);
+
+        // Harcoding the name of the days according to the position
+        // (ask benja and mariano if this is OK)
+        switch (position) {
+            case 0 : day = "Hoy"; break;
+            case 1 : day = "Mañana"; break;
+            case 2 : day = dia3; break;
+            case 3 : day = dia4; break;
+            default: day = "";
+        }
+
+        return day;
     }
 
     @Override
@@ -62,21 +83,7 @@ public class ForecastInfoAdapter extends ArrayAdapter<WeatherData.ForecastInfo> 
             TextView tt2 = (TextView) v.findViewById(R.id.list_item_info);
             TextView tt3 = (TextView) v.findViewById(R.id.list_item_temperature);
 
-            DateFormat dateFormat = new SimpleDateFormat("dd-MMM");
-
-            Calendar calendar = Calendar.getInstance();
-            String dia3 = addOneDay(calendar, dateFormat);
-            String dia4 = addOneDay(calendar, dateFormat);
-
-            // Harcoding the name of the days according to the position
-            // (ask benja and mariano if this is OK)
-            switch (position) {
-                case 0 : tt0.setText("Hoy"); break;
-                case 1 : tt0.setText("Mañana"); break;
-                case 2 : tt0.setText(dia3); break;
-                case 3 : tt0.setText(dia4); break;
-            }
-
+            tt0.setText(getDay(position));
             Picasso.with(getContext()).load(forecastInfo.getIconAddress()).into(tt1);
             tt2.setText(forecastInfo.getDescription());
             tt3.setText(forecastInfo.getTemperatureInCelsius());

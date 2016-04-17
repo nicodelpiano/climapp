@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="30dp"
     android:orientation="vertical"
+    android:id="@+id/fragment_details"
     >
 
     <TextView
@@ -18,20 +20,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Date"
+        android:hint="City Name"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:id="@+id/details_date"
+        android:id="@+id/details_city"
     />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
             android:textSize="80sp"
             android:hint="14"
             android:id="@+id/details_temperature"/>
@@ -44,6 +46,7 @@
         <ImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
+            android:layout_gravity="center"
             android:id="@+id/details_image"/>
 
         <TextView
@@ -52,7 +55,7 @@
             android:gravity="center"
             android:hint="Info"
             android:textSize="20sp"
-            android:id="@+id/list_item_info"
+            android:id="@+id/details_info"
             android:textColor="#000000" />
         </LinearLayout>
 
@@ -62,7 +65,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Humedad"
+        android:text="Humedad: "
         android:id="@+id/details_humidity"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Presión: "
+        android:id="@+id/details_pressure"/>
 
 </LinearLayout>

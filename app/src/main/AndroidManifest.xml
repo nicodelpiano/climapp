@@ -19,8 +19,8 @@
         </activity>
         <activity
             android:name=".ShowDetailsActivity"
-            android:label="@string/title_activity_show_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="Climapp"
+            ></activity>
     </application>
 
 </manifest>

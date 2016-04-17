@@ -1,12 +1,24 @@
 package com.example.android.climapp;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telecom.Call;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -18,9 +30,16 @@ public class ShowDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_details);
 
-        Intent intent = getIntent();
-        WeatherData weather = (WeatherData) intent.getParcelableExtra("wdata");
-        System.out.println(weather.list);
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getFragmentManager();
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            DetailsFragment df = new DetailsFragment();
+
+            fragmentTransaction.add(R.id.activity_show_details, df);
+            fragmentTransaction.commit();
+        }
 
     }
 
