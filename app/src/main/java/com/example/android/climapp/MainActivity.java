@@ -61,20 +61,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cityName = cityEditText.getText().toString();
-                Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
+                if (!cityName.isEmpty()) {
+                    Volley.newRequestQueue(getApplicationContext()).add(makeJSONRequest(cityName));
+                }
             }
         });
 
-        FragmentManager fragmentManager = getFragmentManager();
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getFragmentManager();
 
-        // This begins the fragment transaction that let us play with the fragment
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            // This begins the fragment transaction that let us play with the fragment
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        // wf stands for weather fragment
-        WeatherFragment wf = new WeatherFragment();
+            // wf stands for weather fragment
+            WeatherFragment wf = new WeatherFragment();
 
-        fragmentTransaction.add(R.id.activity_main, wf);
-        fragmentTransaction.commit();
+            fragmentTransaction.replace(R.id.activity_main, wf);
+            fragmentTransaction.commit();
+        }
 
     }
 
@@ -88,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
                         weatherInfo = response;
                         weatherData = new Gson().fromJson(weatherInfo.toString(), WeatherData.class);
-                        weatherListView = (ListView) findViewById(R.id.weather_three_fragment_list);
+                        weatherListView = (ListView) findViewById(R.id.weather_fragment_list);
 
                         // get data from the table by the ListAdapter
                         ForecastInfoAdapter forecastInfoAdapter = new ForecastInfoAdapter(
@@ -125,12 +129,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Esto no es null cuando estamos en una pantalla grande, como una tablet
         if(findViewById(R.id.bigscreen_layout) != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             DetailsFragment df = new DetailsFragment();
             Bundle bundle = new Bundle();
             bundle.putParcelable("wData", weatherData);
             bundle.putInt("day", position);
             df.setArguments(bundle);
-            getFragmentManager().beginTransaction().add(R.id.activity_main, df).commit();
+            fragmentTransaction.replace(R.id.fragment_weather_layout, df).commit();
+
         } else {
             Intent intent = new Intent(this, ShowDetailsActivity.class);
             intent.putExtra("wData", weatherData);
