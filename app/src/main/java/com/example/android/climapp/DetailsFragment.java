@@ -51,6 +51,7 @@ public class DetailsFragment extends Fragment {
         cityName = (TextView) rootView.findViewById(R.id.details_city);
         image = (ImageView) rootView.findViewById(R.id.details_image);
 
+
         temperature.setText(weatherData.getTemperatureInCelsius(dayPos));
         day.setText(ForecastInfoAdapter.getDay(dayPos));
         info.setText(weatherData.getDescription(dayPos));
